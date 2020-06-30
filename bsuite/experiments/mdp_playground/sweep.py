@@ -41,6 +41,8 @@ config["terminal_state_density"] = 0.25
 config["completely_connected"] = True
 config["repeats_in_sequences"] = False
 config["generate_random_mdp"] = True
+# import logging
+# config["log_level"] = logging.DEBUG
 
 _SETTINGS = []
 delays = [0, 1, 2, 4, 8]

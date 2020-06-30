@@ -25,8 +25,12 @@ from bsuite.environments import base
 from bsuite.utils.gym_wrapper import DMEnvFromGym, space2spec
 import dm_env
 from dm_env import specs
+from dm_env import StepType
 import gym
 import numpy as np
+
+# def ohe_observation(obs):
+
 
 class DM_RLToyEnv(base.Environment):
   """A wrapper to convert an RLToyEnv Gym environment from MDP Playground to a
@@ -37,6 +41,8 @@ class DM_RLToyEnv(base.Environment):
     self.dm_env = DMEnvFromGym(self.gym_env)
 
     self.max_episode_len = max_episode_len
+    self._raw_return = 0.
+    self._best_episode = 0.
     self._episode_return = 0.
 
     self.bsuite_num_episodes = sweep.NUM_EPISODES
@@ -50,7 +56,11 @@ class DM_RLToyEnv(base.Environment):
 
   def reset(self) -> dm_env.TimeStep:
     self._episode_return = 0.
-    return self.dm_env.reset()
+    dm_env_reset = self.dm_env.reset()
+    ohe_obs = np.zeros(shape=(self.gym_env.observation_space.n,), dtype=np.float32) #hack
+    ohe_obs[dm_env_reset.observation] = 1
+    # dm_env_reset.observation = ohe_obs
+    return dm_env.restart(ohe_obs)
 
   def step(self, action: int) -> dm_env.TimeStep:
     dm_env_step = self.dm_env.step(action)
@@ -59,7 +69,15 @@ class DM_RLToyEnv(base.Environment):
     if self.gym_env.total_transitions_episode > self.max_episode_len:
       self._best_episode = max(self._episode_return, self._best_episode)
       dm_env_step = dm_env.truncation(dm_env_step.reward, dm_env_step.observation)
-    return dm_env_step
+
+    ohe_obs = np.zeros(shape=(self.gym_env.observation_space.n,), dtype=np.float32) #hack #TODO bsuite/baselines/tf/dqn agent doesn't allow discrete states
+    ohe_obs[dm_env_step.observation] = 1
+    # dm_env_step.observation = ohe_obs
+
+    if dm_env_step.step_type == StepType.LAST:
+      return dm_env.termination(dm_env_step.reward, ohe_obs)
+    else:
+      return dm_env.transition(dm_env_step.reward, ohe_obs)
 
   def _step(self, action: int) -> dm_env.TimeStep:
     raise NotImplementedError('This environment implements its own auto-reset.')
@@ -70,7 +88,7 @@ class DM_RLToyEnv(base.Environment):
   def close(self):
     self.gym_env.close()
 
-  def observation_spec(self):
+  def observation_spec(self): ##TODO change for OHE
     return self.dm_env.observation_spec()
 
   def action_spec(self):
