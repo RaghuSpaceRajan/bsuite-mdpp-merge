@@ -31,6 +31,7 @@ from bsuite.experiments.catch_scale import analysis as catch_scale_analysis
 from bsuite.experiments.deep_sea import analysis as deep_sea_analysis
 from bsuite.experiments.deep_sea_stochastic import analysis as deep_sea_stochastic_analysis
 from bsuite.experiments.discounting_chain import analysis as discounting_chain_analysis
+from bsuite.experiments.mdp_playground import analysis as mdp_playground_analysis
 from bsuite.experiments.memory_len import analysis as memory_len_analysis
 from bsuite.experiments.memory_size import analysis as memory_size_analysis
 from bsuite.experiments.mnist import analysis as mnist_analysis
@@ -84,6 +85,7 @@ BSUITE_INFO = dict(
     deep_sea=_parse_bsuite(deep_sea_analysis),
     deep_sea_stochastic=_parse_bsuite(deep_sea_stochastic_analysis),
     discounting_chain=_parse_bsuite(discounting_chain_analysis),
+    mdp_playground=_parse_bsuite(mdp_playground_analysis),
     memory_len=_parse_bsuite(memory_len_analysis),
     memory_size=_parse_bsuite(memory_size_analysis),
     mnist=_parse_bsuite(mnist_analysis),

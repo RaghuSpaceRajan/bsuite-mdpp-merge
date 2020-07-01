@@ -35,27 +35,23 @@ def score(df: pd.DataFrame) -> float:
   """Output a score for MDP Playground."""
   # cp_df = cartpole_preprocess(df_in=df)
   regret_score = plotting.ave_regret_score(
-      cp_df, baseline_regret=BASE_REGRET, episode=NUM_EPISODES)
+      df, baseline_regret=BASE_REGRET, episode=NUM_EPISODES)
 
-  # Give 50% of score if your "best" episode > GOOD_EPISODE threshold.
-  solve_score = np.mean(
-      cp_df.groupby('seed')['best_episode'].max() > GOOD_EPISODE)
-
-  return 0.5 * (regret_score + solve_score)
+  return regret_score
 
 
-def cartpole_preprocess(df_in: pd.DataFrame) -> pd.DataFrame:
-  """Preprocess cartpole data for use with regret metrics."""
-  df = df_in.copy()
-  df = df[df.episode <= NUM_EPISODES]
-  df['total_regret'] = (BASE_REGRET * df.episode) - df.raw_return
-  return df
+# def cartpole_preprocess(df_in: pd.DataFrame) -> pd.DataFrame:
+#   """Preprocess cartpole data for use with regret metrics."""
+#   df = df_in.copy()
+#   df = df[df.episode <= NUM_EPISODES]
+#   df['total_regret'] = (BASE_REGRET * df.episode) - df.raw_return
+#   return df
 
 
 def plot_learning(df: pd.DataFrame,
                   sweep_vars: Sequence[str] = None) -> gg.ggplot:
   """Simple learning curves for cartpole."""
-  df = cartpole_preprocess(df)
+  # df = cartpole_preprocess(df)
   p = plotting.plot_regret_learning(
       df, sweep_vars=sweep_vars, max_episode=NUM_EPISODES)
   p += gg.geom_hline(gg.aes(yintercept=BASE_REGRET),

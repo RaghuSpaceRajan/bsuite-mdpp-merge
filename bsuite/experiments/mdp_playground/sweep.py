@@ -18,7 +18,7 @@
 
 import copy
 
-NUM_EPISODES = 100
+NUM_EPISODES = 1000
 #NUM_TIMESTEPS = 20000
 
 # Need to have full config, including: S, A,; explicitly state all of them for backward compatibility.
@@ -53,3 +53,4 @@ for i in range(5):
 
 SETTINGS = tuple(_SETTINGS) # delays, seeds for agents or envs?
 TAGS = ('delay', 'credit_assignment')#, 'sparsity', 'basic', 'generalization')
+# TAGS = ('credit_assignment')#, 'sparsity', 'basic', 'generalization')
