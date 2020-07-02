@@ -186,7 +186,7 @@ def _gen_ordered_experiments() -> Sequence[str]:
   noise = [env + '_noise' for env in basics]
   scale = [env + '_scale' for env in basics]
   explore = ['deep_sea', 'deep_sea_stochastic', 'cartpole_swingup']
-  credit = ['umbrella_length', 'umbrella_distract', 'discounting_chain']
+  credit = ['umbrella_length', 'umbrella_distract', 'discounting_chain', 'mdp_playground']
   memory = ['memory_len', 'memory_size']
   return basics + noise + scale + explore + credit + memory
 

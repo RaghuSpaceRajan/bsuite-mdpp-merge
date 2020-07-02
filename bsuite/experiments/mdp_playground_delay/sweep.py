@@ -30,7 +30,6 @@ config["state_space_type"] = "discrete"
 config["action_space_type"] = "discrete"
 config["state_space_size"] = 8
 config["action_space_size"] = 8
-config["delay"] = 0
 config["sequence_length"] = 1
 config["reward_scale"] = 1
 config["reward_shift"] = 0
@@ -46,10 +45,6 @@ config["generate_random_mdp"] = True
 # config["log_level"] = logging.DEBUG
 
 _SETTINGS = []
-# for j in range(20):
-#   config_copy = copy.deepcopy(config)
-#   config_copy["seed"] = j
-#   _SETTINGS.append(config_copy)
 delays = [0, 1, 2, 4, 8]
 for i in range(5):
   for j in range(4):
@@ -58,7 +53,6 @@ for i in range(5):
     config_copy["seed"] = j
     _SETTINGS.append(config_copy)
 
-
 SETTINGS = tuple(_SETTINGS) # delays, seeds for agents or envs?
-# TAGS = ('basic', )#, 'sparsity', 'basic', 'generalization')
-TAGS = ('credit_assignment', 'delay', )#, 'sparsity', 'basic', 'generalization')
+TAGS = ('credit_assignment', 'delay')#, 'sparsity', 'basic', 'generalization')
+# TAGS = ('credit_assignment',)#, 'sparsity', 'basic', 'generalization')

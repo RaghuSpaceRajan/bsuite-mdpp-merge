@@ -33,7 +33,8 @@ import numpy as np
 
 class DM_RLToyEnv(base.Environment):
   """A wrapper to convert an RLToyEnv Gym environment from MDP Playground to a
-  base.Environment which is a subclass of dm_env.Environment."""
+  base.Environment which is a subclass of dm_env.Environment.
+  Based on the DMEnvFromGym in gym_wrapper.py"""
 
   def __init__(self, max_episode_len=100, **config: dict):
     self.gym_env = gym.make("RLToy-v0", **config)
