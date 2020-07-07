@@ -31,46 +31,56 @@ GOOD_EPISODE = 50
 TAGS = sweep.TAGS
 
 
-def score(df: pd.DataFrame) -> float:
-  """Output a score for MDP Playground."""
-  df = mdpp_preprocess(df_in=df)
-  regret_score = plotting.ave_regret_score(
-      df, baseline_regret=BASE_REGRET, episode=NUM_EPISODES)
 
-  return regret_score
+def score(df: pd.DataFrame, scaling_var='delay') -> float:
+  """Output a single score for experiment = mean - std over scaling_var."""
+  return plotting.score_by_scaling(
+      df=df,
+      score_fn=score_,
+      scaling_var=scaling_var,
+  )
 
-
-def mdpp_preprocess(df_in: pd.DataFrame) -> pd.DataFrame:
+def mdpp_preprocess_delay(df_in: pd.DataFrame) -> pd.DataFrame:
   """Preprocess MDP Playground data for use with regret metrics."""
   df = df_in.copy()
   df = df[df.episode <= NUM_EPISODES]
-  df['total_regret'] = (BASE_REGRET * df.episode) - df.raw_return
+  df['total_regret'] = (((BASE_REGRET - df.delay) * df.episode) - df.raw_return) * BASE_REGRET/(BASE_REGRET - df.delay) # rescaling because regret differs when delay is present!
   return df
 
-
 def plot_learning(df: pd.DataFrame,
-                  sweep_vars: Sequence[str] = None) -> gg.ggplot:
-  """Simple learning curves for MDP Playground."""
-  df = mdpp_preprocess(df)
+                  sweep_vars: Sequence[str] = None,
+                  group_col: str = 'delay') -> gg.ggplot:
+  """Plots the average regret through time."""
+  df = mdpp_preprocess_delay(df)
   p = plotting.plot_regret_learning(
-      df, sweep_vars=sweep_vars, max_episode=NUM_EPISODES)
+      df_in=df, group_col=group_col, sweep_vars=sweep_vars,
+      max_episode=sweep.NUM_EPISODES)
   p += gg.geom_hline(gg.aes(yintercept=BASE_REGRET),
                      linetype='dashed', alpha=0.4, size=1.75)
   return p
 
 
-def plot_seeds(df_in: pd.DataFrame,
-               sweep_vars: Sequence[str] = None,
-               colour_var: str = None) -> gg.ggplot:
-  """Plot the returns through time individually by run."""
-  df = df_in.copy()
-  df['average_return'] = df.raw_return.diff() / df.episode.diff()
-  p = plotting.plot_individual_returns(
+def plot_average(df: pd.DataFrame,
+                 sweep_vars: Sequence[str] = None,
+                 group_col: str = 'delay') -> gg.ggplot:
+  """Plots the average regret through time by delay."""
+  df = mdpp_preprocess_delay(df)
+  p = plotting.plot_regret_average(
       df_in=df,
-      max_episode=NUM_EPISODES,
-      return_column='average_return',
-      colour_var=colour_var,
-      yintercept=BASE_REGRET,
-      sweep_vars=sweep_vars,
+      group_col=group_col,
+      episode=sweep.NUM_EPISODES,
+      sweep_vars=sweep_vars
   )
-  return p + gg.ylab('average episodic return')
+  p += gg.geom_hline(gg.aes(yintercept=BASE_REGRET),
+                     linetype='dashed', alpha=0.4, size=1.75)
+  return p
+
+
+def plot_seeds(df: pd.DataFrame,
+               sweep_vars: Sequence[str] = None) -> gg.ggplot:
+  """Plot the performance by individual work unit."""
+  return plot_seeds_(
+      df_in=df,
+      sweep_vars=sweep_vars,
+      colour_var='delay'
+  ) + gg.ylab('average episodic return (removing noise)')

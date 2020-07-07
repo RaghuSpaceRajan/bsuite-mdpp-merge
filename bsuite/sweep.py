@@ -50,6 +50,7 @@ from bsuite.experiments.deep_sea import sweep as deep_sea_sweep
 from bsuite.experiments.deep_sea_stochastic import sweep as deep_sea_stochastic_sweep
 from bsuite.experiments.discounting_chain import sweep as discounting_chain_sweep
 from bsuite.experiments.mdp_playground import sweep as mdp_playground_sweep
+from bsuite.experiments.mdp_playground_delay import sweep as mdp_playground_delay_sweep
 from bsuite.experiments.memory_len import sweep as memory_len_sweep
 from bsuite.experiments.memory_size import sweep as memory_size_sweep
 from bsuite.experiments.mnist import sweep as mnist_sweep
@@ -122,6 +123,7 @@ DEEP_SEA = _parse_sweep(deep_sea_sweep)
 DEEP_SEA_STOCHASTIC = _parse_sweep(deep_sea_stochastic_sweep)
 DISCOUNTING_CHAIN = _parse_sweep(discounting_chain_sweep)
 MDP_PLAYGROUND = _parse_sweep(mdp_playground_sweep)
+MDP_PLAYGROUND_DELAY = _parse_sweep(mdp_playground_delay_sweep)
 MEMORY_LEN = _parse_sweep(memory_len_sweep)
 MEMORY_SIZE = _parse_sweep(memory_size_sweep)
 MNIST = _parse_sweep(mnist_sweep)

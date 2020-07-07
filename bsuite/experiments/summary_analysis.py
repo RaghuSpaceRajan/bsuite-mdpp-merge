@@ -32,6 +32,7 @@ from bsuite.experiments.deep_sea import analysis as deep_sea_analysis
 from bsuite.experiments.deep_sea_stochastic import analysis as deep_sea_stochastic_analysis
 from bsuite.experiments.discounting_chain import analysis as discounting_chain_analysis
 from bsuite.experiments.mdp_playground import analysis as mdp_playground_analysis
+from bsuite.experiments.mdp_playground_delay import analysis as mdp_playground_delay_analysis
 from bsuite.experiments.memory_len import analysis as memory_len_analysis
 from bsuite.experiments.memory_size import analysis as memory_size_analysis
 from bsuite.experiments.mnist import analysis as mnist_analysis
@@ -86,6 +87,7 @@ BSUITE_INFO = dict(
     deep_sea_stochastic=_parse_bsuite(deep_sea_stochastic_analysis),
     discounting_chain=_parse_bsuite(discounting_chain_analysis),
     mdp_playground=_parse_bsuite(mdp_playground_analysis),
+    mdp_playground_delay=_parse_bsuite(mdp_playground_delay_analysis),
     memory_len=_parse_bsuite(memory_len_analysis),
     memory_size=_parse_bsuite(memory_size_analysis),
     mnist=_parse_bsuite(mnist_analysis),
@@ -186,7 +188,7 @@ def _gen_ordered_experiments() -> Sequence[str]:
   noise = [env + '_noise' for env in basics]
   scale = [env + '_scale' for env in basics]
   explore = ['deep_sea', 'deep_sea_stochastic', 'cartpole_swingup']
-  credit = ['umbrella_length', 'umbrella_distract', 'discounting_chain', 'mdp_playground']
+  credit = ['umbrella_length', 'umbrella_distract', 'discounting_chain', 'mdp_playground', 'mdp_playground_delay'] ###TODO create new lists for MDP Playground meta-features?
   memory = ['memory_len', 'memory_size']
   return basics + noise + scale + explore + credit + memory
 

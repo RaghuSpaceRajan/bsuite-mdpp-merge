@@ -30,22 +30,13 @@ BASE_REGRET = 100
 GOOD_EPISODE = 50
 TAGS = sweep.TAGS
 
-
-def score_(df: pd.DataFrame) -> float:
+def score(df: pd.DataFrame) -> float:
   """Output a score for MDP Playground."""
   df = mdpp_preprocess(df_in=df)
   regret_score = plotting.ave_regret_score(
       df, baseline_regret=BASE_REGRET, episode=NUM_EPISODES)
 
   return regret_score
-
-def score(df: pd.DataFrame, scaling_var='delay') -> float:
-  """Output a single score for experiment = mean - std over scaling_var."""
-  return plotting.score_by_scaling(
-      df=df,
-      score_fn=score_,
-      scaling_var=scaling_var,
-  )
 
 def mdpp_preprocess(df_in: pd.DataFrame) -> pd.DataFrame:
   """Preprocess MDP Playground data for use with regret metrics."""
@@ -54,19 +45,17 @@ def mdpp_preprocess(df_in: pd.DataFrame) -> pd.DataFrame:
   df['total_regret'] = (BASE_REGRET * df.episode) - df.raw_return
   return df
 
+def plot_learning(df: pd.DataFrame,
+                  sweep_vars: Sequence[str] = None) -> gg.ggplot:
+  """Simple learning curves for MDP Playground."""
+  df = mdpp_preprocess(df)
+  p = plotting.plot_regret_learning(
+      df, sweep_vars=sweep_vars, max_episode=NUM_EPISODES)
+  p += gg.geom_hline(gg.aes(yintercept=BASE_REGRET),
+                     linetype='dashed', alpha=0.4, size=1.75)
+  return p
 
-# def plot_learning(df: pd.DataFrame,
-#                   sweep_vars: Sequence[str] = None) -> gg.ggplot:
-#   """Simple learning curves for MDP Playground."""
-#   df = mdpp_preprocess(df)
-#   p = plotting.plot_regret_learning(
-#       df, sweep_vars=sweep_vars, max_episode=NUM_EPISODES)
-#   p += gg.geom_hline(gg.aes(yintercept=BASE_REGRET),
-#                      linetype='dashed', alpha=0.4, size=1.75)
-#   return p
-#
-
-def plot_seeds_(df_in: pd.DataFrame,
+def plot_seeds(df_in: pd.DataFrame,
                sweep_vars: Sequence[str] = None,
                colour_var: str = None) -> gg.ggplot:
   """Plot the returns through time individually by run."""
@@ -81,41 +70,3 @@ def plot_seeds_(df_in: pd.DataFrame,
       sweep_vars=sweep_vars,
   )
   return p + gg.ylab('average episodic return')
-
-def plot_learning(df: pd.DataFrame,
-                  sweep_vars: Sequence[str] = None,
-                  group_col: str = 'delay') -> gg.ggplot:
-  """Plots the average regret through time."""
-  df = mdpp_preprocess(df)
-  p = plotting.plot_regret_learning(
-      df_in=df, group_col=group_col, sweep_vars=sweep_vars,
-      max_episode=sweep.NUM_EPISODES)
-  p += gg.geom_hline(gg.aes(yintercept=BASE_REGRET),
-                     linetype='dashed', alpha=0.4, size=1.75)
-  return p
-
-
-def plot_average(df: pd.DataFrame,
-                 sweep_vars: Sequence[str] = None,
-                 group_col: str = 'delay') -> gg.ggplot:
-  """Plots the average regret through time by delay."""
-  df = mdpp_preprocess(df)
-  p = plotting.plot_regret_average(
-      df_in=df,
-      group_col=group_col,
-      episode=sweep.NUM_EPISODES,
-      sweep_vars=sweep_vars
-  )
-  p += gg.geom_hline(gg.aes(yintercept=BASE_REGRET),
-                     linetype='dashed', alpha=0.4, size=1.75)
-  return p
-
-
-def plot_seeds(df: pd.DataFrame,
-               sweep_vars: Sequence[str] = None) -> gg.ggplot:
-  """Plot the performance by individual work unit."""
-  return plot_seeds_(
-      df_in=df,
-      sweep_vars=sweep_vars,
-      colour_var='delay'
-  ) + gg.ylab('average episodic return (removing noise)')
