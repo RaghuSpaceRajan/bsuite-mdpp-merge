@@ -19,7 +19,8 @@
 ###TODO change to mdpp stuff below
 from typing import Sequence
 
-from bsuite.experiments.mdp_playground import sweep
+from bsuite.experiments.mdp_playground import analysis as mdp_playground_analysis
+from bsuite.experiments.mdp_playground_delay import sweep
 from bsuite.utils import plotting
 import numpy as np
 import pandas as pd
@@ -36,7 +37,7 @@ def score(df: pd.DataFrame, scaling_var='delay') -> float:
   """Output a single score for experiment = mean - std over scaling_var."""
   return plotting.score_by_scaling(
       df=df,
-      score_fn=score_,
+      score_fn=mdp_playground_analysis.score,
       scaling_var=scaling_var,
   )
 
@@ -79,7 +80,7 @@ def plot_average(df: pd.DataFrame,
 def plot_seeds(df: pd.DataFrame,
                sweep_vars: Sequence[str] = None) -> gg.ggplot:
   """Plot the performance by individual work unit."""
-  return plot_seeds_(
+  return mdp_playground_analysis.plot_seeds(
       df_in=df,
       sweep_vars=sweep_vars,
       colour_var='delay'
