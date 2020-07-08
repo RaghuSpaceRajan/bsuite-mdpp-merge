@@ -36,7 +36,9 @@ def score(df: pd.DataFrame) -> float:
   regret_score = plotting.ave_regret_score(
       df, baseline_regret=BASE_REGRET, episode=NUM_EPISODES)
 
-  return regret_score
+  norm_score = 2.5 * regret_score # 2.5 is heuristically chosen value to get Sonnet DQN to score approx. 0.75, so that better algorithms like Rainbow can get score close to 1. With a bigger NN this would mean an unclipped score of 1.1 for Sonnet DQN, which is fair I think.
+  norm_score = np.clip(norm_score, 0, 1)
+  return norm_score
 
 def mdpp_preprocess(df_in: pd.DataFrame) -> pd.DataFrame:
   """Preprocess MDP Playground data for use with regret metrics."""

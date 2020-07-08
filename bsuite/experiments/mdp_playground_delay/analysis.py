@@ -84,4 +84,4 @@ def plot_seeds(df: pd.DataFrame,
       df_in=df,
       sweep_vars=sweep_vars,
       colour_var='delay'
-  ) + gg.ylab('average episodic return (removing noise)')
+  ) + gg.ylab('average episodic return')

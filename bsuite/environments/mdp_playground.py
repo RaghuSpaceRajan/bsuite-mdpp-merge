@@ -88,8 +88,10 @@ class DM_RLToyEnv(base.Environment):
   def close(self):
     self.gym_env.close()
 
-  def observation_spec(self): ##TODO change for OHE
-    return self.dm_env.observation_spec()
+  def observation_spec(self): ##TODO changed for OHE #hack
+    return specs.BoundedArray(shape=(self.gym_env.observation_space.n,), dtype=self.gym_env.observation_space.dtype, minimum=0.0,
+                              maximum=1.0, name='observations')
+    # return self.dm_env.observation_spec()
 
   def action_spec(self):
     return self.dm_env.action_spec()
