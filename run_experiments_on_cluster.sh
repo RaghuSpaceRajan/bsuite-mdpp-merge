@@ -12,7 +12,7 @@
 #SBATCH -a 0-19 # Sets SLURM_ARRAY_TASK_ID - array index values, e.g. 0-31:2; 0-11%4 (it means max 4 tasks at a time)
 
 export EXP_NAME='mdp_playground_delay' # Ideally contains Area of research + algorithm + dataset # Could just pass this as job name?
-export AGENT='tf/boot_dqn'
+export AGENT='tf/actor_critic'
 
 echo -e '\033[32m'
 # Print some information about the job to STDOUT
