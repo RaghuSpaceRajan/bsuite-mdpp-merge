@@ -35,6 +35,10 @@ from bsuite.experiments.deep_sea_stochastic import deep_sea_stochastic
 from bsuite.experiments.discounting_chain import discounting_chain
 from bsuite.experiments.mdp_playground import mdp_playground
 from bsuite.experiments.mdp_playground_delay import mdp_playground_delay
+from bsuite.experiments.mdp_playground_p_noise import mdp_playground_p_noise
+from bsuite.experiments.mdp_playground_r_noise import mdp_playground_r_noise
+from bsuite.experiments.mdp_playground_r_sparse import mdp_playground_r_sparse
+from bsuite.experiments.mdp_playground_seq_len import mdp_playground_seq_len
 from bsuite.experiments.memory_len import memory_len
 from bsuite.experiments.memory_size import memory_size
 from bsuite.experiments.mnist import mnist
@@ -74,6 +78,10 @@ EXPERIMENT_NAME_TO_ENVIRONMENT = dict(
     discounting_chain=discounting_chain.load,
     mdp_playground=mdp_playground.load,
     mdp_playground_delay=mdp_playground_delay.load,
+    mdp_playground_p_noise=mdp_playground_p_noise.load,
+    mdp_playground_r_noise=mdp_playground_r_noise.load,
+    mdp_playground_r_sparse=mdp_playground_r_sparse.load,
+    mdp_playground_seq_len=mdp_playground_seq_len.load,
     memory_len=memory_len.load,
     memory_size=memory_size.load,
     mnist=mnist.load,
