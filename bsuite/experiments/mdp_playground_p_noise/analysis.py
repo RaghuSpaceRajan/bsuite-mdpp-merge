@@ -20,7 +20,7 @@
 from typing import Sequence
 
 from bsuite.experiments.mdp_playground import analysis as mdp_playground_analysis
-from bsuite.experiments.mdp_playground_delay import sweep
+from bsuite.experiments.mdp_playground_p_noise import sweep
 from bsuite.utils import plotting
 import numpy as np
 import pandas as pd
@@ -33,7 +33,7 @@ TAGS = sweep.TAGS
 
 
 
-def score(df: pd.DataFrame, scaling_var='delay') -> float:
+def score(df: pd.DataFrame, scaling_var='transition_noise') -> float:
   """Output a single score for experiment = mean - std over scaling_var."""
   return plotting.score_by_scaling(
       df=df,
@@ -41,18 +41,12 @@ def score(df: pd.DataFrame, scaling_var='delay') -> float:
       scaling_var=scaling_var,
   )
 
-def mdpp_preprocess_p_noise(df_in: pd.DataFrame) -> pd.DataFrame:
-  """Preprocess MDP Playground data for use with regret metrics."""
-  df = df_in.copy()
-  df = df[df.episode <= NUM_EPISODES]
-  df['total_regret'] = (((BASE_REGRET - df.delay) * df.episode) - df.raw_return) * BASE_REGRET/(BASE_REGRET - df.delay) # rescaling because regret differs when delay is present!
-  return df
 
 def plot_learning(df: pd.DataFrame,
                   sweep_vars: Sequence[str] = None,
-                  group_col: str = 'delay') -> gg.ggplot:
+                  group_col: str = 'transition_noise') -> gg.ggplot:
   """Plots the average regret through time."""
-  df = mdpp_preprocess_p_noise(df)
+  df = mdp_playground_analysis.mdpp_preprocess(df)
   p = plotting.plot_regret_learning(
       df_in=df, group_col=group_col, sweep_vars=sweep_vars,
       max_episode=sweep.NUM_EPISODES)
@@ -63,9 +57,9 @@ def plot_learning(df: pd.DataFrame,
 
 def plot_average(df: pd.DataFrame,
                  sweep_vars: Sequence[str] = None,
-                 group_col: str = 'delay') -> gg.ggplot:
-  """Plots the average regret through time by delay."""
-  df = mdpp_preprocess_p_noise(df)
+                 group_col: str = 'transition_noise') -> gg.ggplot:
+  """Plots the average regret through time by transition_noise."""
+  df = mdp_playground_analysis.mdpp_preprocess(df)
   p = plotting.plot_regret_average(
       df_in=df,
       group_col=group_col,
@@ -83,5 +77,5 @@ def plot_seeds(df: pd.DataFrame,
   return mdp_playground_analysis.plot_seeds(
       df_in=df,
       sweep_vars=sweep_vars,
-      colour_var='delay'
+      colour_var='transition_noise'
   ) + gg.ylab('average episodic return (removing noise)')
