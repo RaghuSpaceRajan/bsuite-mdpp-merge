@@ -49,10 +49,15 @@ config["generate_random_mdp"] = True
 _SETTINGS = []
 r_noise = [0, 1, 5, 10, 15]
 num_seeds = 4
+from functools import partial
 for i in range(len(r_noise)):
   for j in range(num_seeds):
     config_copy = copy.deepcopy(config)
-    config_copy["reward_noise"] = lambda a: a.normal(0, r_noise[i])
+    def reward_noise(r_noise, numpy_random_state):
+      # return lambda numpy_random_state: numpy_random_state.normal(0, r_noise[i])
+      return numpy_random_state.normal(0, r_noise)
+    config_copy["reward_noise"] = partial(reward_noise, r_noise[i])
+    config_copy["r_noise"] = r_noise[i] #hack to enable plots using the variable "r_noise"
     config_copy["seed"] = j
     _SETTINGS.append(config_copy)
 

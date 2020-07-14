@@ -57,4 +57,4 @@ for i in range(len(seq_len)):
     _SETTINGS.append(config_copy)
 
 SETTINGS = tuple(_SETTINGS) # delays, seeds for agents or envs?
-TAGS = ('seq_len')#, 'sparsity', 'basic', 'generalization')
+TAGS = ('exploration', 'credit_assignment',)#, 'hierarchy', 'sparsity', 'basic', 'generalization')

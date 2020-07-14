@@ -33,7 +33,7 @@ TAGS = sweep.TAGS
 
 
 
-def score(df: pd.DataFrame, scaling_var='reward_noise') -> float:
+def score(df: pd.DataFrame, scaling_var='r_noise') -> float:
   """Output a single score for experiment = mean - std over scaling_var."""
   return plotting.score_by_scaling(
       df=df,
@@ -44,7 +44,7 @@ def score(df: pd.DataFrame, scaling_var='reward_noise') -> float:
 
 def plot_learning(df: pd.DataFrame,
                   sweep_vars: Sequence[str] = None,
-                  group_col: str = 'reward_noise') -> gg.ggplot:
+                  group_col: str = 'r_noise') -> gg.ggplot:
   """Plots the average regret through time."""
   df = mdp_playground_analysis.mdpp_preprocess(df)
   p = plotting.plot_regret_learning(
@@ -57,8 +57,8 @@ def plot_learning(df: pd.DataFrame,
 
 def plot_average(df: pd.DataFrame,
                  sweep_vars: Sequence[str] = None,
-                 group_col: str = 'reward_noise') -> gg.ggplot:
-  """Plots the average regret through time by reward_noise."""
+                 group_col: str = 'r_noise') -> gg.ggplot:
+  """Plots the average regret through time by reward noise."""
   df = mdp_playground_analysis.mdpp_preprocess(df)
   p = plotting.plot_regret_average(
       df_in=df,
@@ -77,5 +77,5 @@ def plot_seeds(df: pd.DataFrame,
   return mdp_playground_analysis.plot_seeds(
       df_in=df,
       sweep_vars=sweep_vars,
-      colour_var='reward_noise'
+      colour_var='r_noise'
   ) + gg.ylab('average episodic return (removing noise)')

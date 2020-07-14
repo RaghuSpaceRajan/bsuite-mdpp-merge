@@ -48,7 +48,7 @@ config["generate_random_mdp"] = True
 
 ## sparse reward experiement settings
 _SETTINGS = []
-r_density = [0.25, 0.5, 0.75]
+r_density = [0.17, 0.34, 0.5, 0.67, 0.84]
 num_seeds = 4
 for i in range(len(r_density)):
   for j in range(num_seeds):
@@ -58,4 +58,4 @@ for i in range(len(r_density)):
     _SETTINGS.append(config_copy)
 
 SETTINGS = tuple(_SETTINGS) # delays, seeds for agents or envs?
-TAGS = ('sparsity')#, 'sparsity', 'basic', 'generalization')
+TAGS = ('basic', 'generalization', 'sparsity')#, 'sparsity', 'basic', 'generalization')
