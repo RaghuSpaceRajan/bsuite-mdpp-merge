@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -p bosch_cpu-cascadelake # ml_cpu-ivy # partition (queue)
-#SBATCH -t 0-04:00 # time (D-HH:MM)
+#SBATCH -t 0-00:20 # time (D-HH:MM)
 #SBATCH -c 1 # number of CPUs/task
 #SBATCH -o log/%x.%A.%a.out # STDOUT  (the folder log has to exist!)  %N replaced by node name, %A will be replaced by the SLURM_ARRAY_JOB_ID value, whilst %a will be replaced by the SLURM_ARRAY_TASK_ID
 #SBATCH -e log/%x.%A.%a.err # STDERR  (the folder log has to exist!)  %A will be replaced by the SLURM_ARRAY_JOB_ID value, whilst %a will be replaced by the SLURM_ARRAY_TASK_ID
@@ -11,8 +11,8 @@
 ##SBATCH --mem 16000M # Specify the real memory required per node, not needed as for our cluster, -c below takes priority and auto-sets the memory. For CPU, use --mem-per-cpu
 #SBATCH -a 0-19 # Sets SLURM_ARRAY_TASK_ID - array index values, e.g. 0-31:2; 0-11%4 (it means max 4 tasks at a time)
 
-export EXP_NAME='mdp_playground_delay' # Ideally contains Area of research + algorithm + dataset # Could just pass this as job name?
-export AGENT='tf/actor_critic'
+export EXP_NAME='mdp_playground_p_noise' # Ideally contains Area of research + algorithm + dataset # Could just pass this as job name?
+export AGENT='tf/boot_dqn'
 
 echo -e '\033[32m'
 # Print some information about the job to STDOUT
