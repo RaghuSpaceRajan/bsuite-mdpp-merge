@@ -41,12 +41,18 @@ def score(df: pd.DataFrame, scaling_var='sequence_length') -> float:
       scaling_var=scaling_var,
   )
 
+def mdpp_preprocess_seq_len(df_in: pd.DataFrame) -> pd.DataFrame:
+  """Preprocess MDP Playground data for use with regret metrics."""
+  df = df_in.copy()
+  df = df[df.episode <= NUM_EPISODES]
+  df['total_regret'] = (((BASE_REGRET / df.sequence_length) * df.episode) - df.raw_return) * df.sequence_length # Rescaling depending on seq_len since max. reward achievable is diff. for diff. seq_lens
+  return df
 
 def plot_learning(df: pd.DataFrame,
                   sweep_vars: Sequence[str] = None,
                   group_col: str = 'sequence_length') -> gg.ggplot:
   """Plots the average regret through time."""
-  df = mdp_playground_analysis.mdpp_preprocess(df) #TODO: change to custom mdpp_preprocess
+  df = mdpp_preprocess_seq_len(df)
   p = plotting.plot_regret_learning(
       df_in=df, group_col=group_col, sweep_vars=sweep_vars,
       max_episode=sweep.NUM_EPISODES)
@@ -59,7 +65,7 @@ def plot_average(df: pd.DataFrame,
                  sweep_vars: Sequence[str] = None,
                  group_col: str = 'sequence_length') -> gg.ggplot:
   """Plots the average regret through time by sequence_length."""
-  df = mdp_playground_analysis.mdpp_preprocess(df) #TODO: change to custom mdpp_preprocess
+  df = mdpp_preprocess_seq_len(df)
   p = plotting.plot_regret_average(
       df_in=df,
       group_col=group_col,

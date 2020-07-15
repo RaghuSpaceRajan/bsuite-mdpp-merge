@@ -32,6 +32,7 @@ config["state_space_size"] = 8
 config["action_space_size"] = 8
 config["delay"] = 0
 #config["sequence_length"] = 1
+config["reward_every_n_steps"] = True
 config["reward_scale"] = 1
 config["reward_shift"] = 0
 # config["reward_noise"] = lambda a: a.normal(0, 0.5)
@@ -48,7 +49,7 @@ config["generate_random_mdp"] = True
 ## sequence length experiement settings
 _SETTINGS = []
 seq_len = [1, 2, 3, 4]
-num_seeds = 4
+num_seeds = 5
 for i in range(len(seq_len)):
   for j in range(num_seeds):
     config_copy = copy.deepcopy(config)
