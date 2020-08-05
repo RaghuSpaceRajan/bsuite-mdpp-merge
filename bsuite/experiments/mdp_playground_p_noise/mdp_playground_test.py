@@ -20,7 +20,7 @@
 # Import all required packages
 
 from absl.testing import absltest
-from bsuite.experiments.cartpole import cartpole
+from bsuite.experiments.mdp_playground_p_noise import mdp_playground_p_noise
 from dm_env import test_utils
 
 import numpy as np
@@ -29,7 +29,19 @@ import numpy as np
 class InterfaceTest(test_utils.EnvironmentTestMixin, absltest.TestCase):
 
   def make_object_under_test(self):
-    return cartpole.Cartpole(seed=22)
+    config = {}
+    config["state_space_type"] = "discrete"
+    config["action_space_type"] = "discrete"
+    config["state_space_size"] = 8
+    config["action_space_size"] = 8
+    config["generate_random_mdp"] = True
+    config["terminal_state_density"] = 0.25
+    config["completely_connected"] = True
+    config["repeats_in_sequences"] = False
+    config["reward_density"] = 0.25
+    config["make_denser"] = False
+    env = mdp_playground_p_noise.load(**config)
+    return env
 
   def make_action_sequence(self):
     valid_actions = [0, 1, 2]

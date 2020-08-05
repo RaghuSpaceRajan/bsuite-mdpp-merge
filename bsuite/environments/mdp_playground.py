@@ -64,8 +64,11 @@ class DM_RLToyEnv(base.Environment):
 
   def step(self, action: int) -> dm_env.TimeStep:
     dm_env_step = self.dm_env.step(action)
-    self._raw_return += dm_env_step.reward
-    self._episode_return += dm_env_step.reward
+    
+    #hack set reward as 0 if dm_env_step.reward returns None which happens in case of restart()
+    self._raw_return += 0. if dm_env_step.reward is None else dm_env_step.reward
+    self._episode_return += 0. if dm_env_step.reward is None else dm_env_step.reward
+
     if self.gym_env.total_transitions_episode > self.max_episode_len:
       self._best_episode = max(self._episode_return, self._best_episode)
       dm_env_step = dm_env.truncation(dm_env_step.reward, dm_env_step.observation)
@@ -74,7 +77,10 @@ class DM_RLToyEnv(base.Environment):
     ohe_obs[dm_env_step.observation] = 1
     # dm_env_step.observation = ohe_obs
 
-    if dm_env_step.step_type == StepType.LAST:
+    # return corresponding TimeStep object based on step_type
+    if dm_env_step.step_type == StepType.FIRST:
+      return dm_env.restart(ohe_obs)
+    elif dm_env_step.step_type == StepType.LAST:
       return dm_env.termination(dm_env_step.reward, ohe_obs)
     else:
       return dm_env.transition(dm_env_step.reward, ohe_obs)
