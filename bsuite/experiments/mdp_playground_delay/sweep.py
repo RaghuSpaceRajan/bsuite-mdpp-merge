@@ -54,5 +54,5 @@ for i in range(5):
     _SETTINGS.append(config_copy)
 
 SETTINGS = tuple(_SETTINGS) # delays, seeds for agents or envs?
-TAGS = ('credit_assignment', 'delay')#, 'sparsity', 'basic', 'generalization')
+TAGS = ('mdp_playground')
 # TAGS = ('credit_assignment',)#, 'sparsity', 'basic', 'generalization')
