@@ -58,4 +58,4 @@ for i in range(len(r_density)):
     _SETTINGS.append(config_copy)
 
 SETTINGS = tuple(_SETTINGS) # delays, seeds for agents or envs?
-TAGS = ('basic', 'generalization', 'sparsity')#, 'sparsity', 'basic', 'generalization')
+TAGS = ('mdp_playground')#, 'sparsity', 'basic', 'generalization')

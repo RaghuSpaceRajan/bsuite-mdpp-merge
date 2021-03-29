@@ -20,7 +20,7 @@
 # Import all required packages
 
 from absl.testing import absltest
-from bsuite.experiments.mdp_playground_p_noise import mdp_playground_p_noise
+from bsuite.environments import cartpole
 from dm_env import test_utils
 
 import numpy as np
