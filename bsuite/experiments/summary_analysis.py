@@ -196,13 +196,14 @@ def _gen_ordered_experiments() -> Sequence[str]:
   noise = [env + '_noise' for env in basics]
   scale = [env + '_scale' for env in basics]
   explore = ['deep_sea', 'deep_sea_stochastic', 'cartpole_swingup']
-  credit = ['umbrella_length', 'umbrella_distract', 'discounting_chain', 'mdp_playground', 'mdp_playground_delay', 'mdp_playground_p_noise', 'mdp_playground_r_noise', 'mdp_playground_r_sparse', 'mdp_playground_seq_len'] ###TODO create new lists for MDP Playground meta-features?
+  credit = ['umbrella_length', 'umbrella_distract', 'discounting_chain']
+  mdp_playground = ['mdp_playground', 'mdp_playground_delay', 'mdp_playground_p_noise', 'mdp_playground_r_noise', 'mdp_playground_r_sparse', 'mdp_playground_seq_len']
   memory = ['memory_len', 'memory_size']
-  return basics + noise + scale + explore + credit + memory
+  return basics + noise + scale + explore + credit + memory + mdp_playground
 
 _ORDERED_EXPERIMENTS = _gen_ordered_experiments()
 _ORDERED_TYPES = [
-    'basic', 'noise', 'scale', 'exploration', 'credit_assignment', 'memory']
+    'basic', 'noise', 'scale', 'exploration', 'credit_assignment', 'memory', 'mdp_playground']
 
 
 def _clean_bar_plot_data(df_in: pd.DataFrame,

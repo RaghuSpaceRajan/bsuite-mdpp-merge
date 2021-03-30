@@ -20,7 +20,7 @@
 # Import all required packages
 
 from absl.testing import absltest
-from bsuite.experiments.cartpole import cartpole
+from bsuite.environments import cartpole
 from dm_env import test_utils
 
 import numpy as np
