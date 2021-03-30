@@ -60,5 +60,5 @@ for j in range(20):
 
 
 SETTINGS = tuple(_SETTINGS) # delays, seeds for agents or envs?
-TAGS = ('basic', )#, 'sparsity', 'basic', 'generalization')
+TAGS = ('mdp_playground', ) # ('basic', 'sparsity', 'basic', 'generalization', 'credit_assignment', 'exploration', 'noise', 'scale', 'memory')
 # TAGS = ('credit_assignment', 'delay', )#, 'sparsity', 'basic', 'generalization')

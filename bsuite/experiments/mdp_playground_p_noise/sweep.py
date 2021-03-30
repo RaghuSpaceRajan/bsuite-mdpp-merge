@@ -58,4 +58,4 @@ for i in range(len(p_noise)):
 
 #TODO: change the tags
 SETTINGS = tuple(_SETTINGS) # delays, seeds for agents or envs?
-TAGS = ('mdp_playground')#, 'sparsity', 'basic', 'generalization')
+TAGS = ('mdp_playground',)#, 'sparsity', 'basic', 'generalization')
