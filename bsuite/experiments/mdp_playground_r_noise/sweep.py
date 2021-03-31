@@ -62,4 +62,4 @@ for i in range(len(r_noise)):
     _SETTINGS.append(config_copy)
 
 SETTINGS = tuple(_SETTINGS) # delays, seeds for agents or envs?
-TAGS = ('mdp_playground')#, 'sparsity', 'basic', 'generalization')
+TAGS = ('mdp_playground',)#, 'sparsity', 'basic', 'generalization')
