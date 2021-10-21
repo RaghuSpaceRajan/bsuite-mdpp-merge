@@ -11,8 +11,8 @@
 ##SBATCH --mem 16000M # Specify the real memory required per node, not needed as for our cluster, -c below takes priority and auto-sets the memory. For CPU, use --mem-per-cpu
 #SBATCH -a 0-19 # Sets SLURM_ARRAY_TASK_ID - array index values, e.g. 0-31:2; 0-11%4 (it means max 4 tasks at a time)
 
-export EXP_NAME='mdp_playground_p_noise' # Ideally contains Area of research + algorithm + dataset # Could just pass this as job name?
-export AGENT='tf/boot_dqn'
+export EXP_NAME='SWEEP' # Ideally contains Area of research + algorithm + dataset # Could just pass this as job name?
+export AGENT='tf/dqn'
 
 echo -e '\033[32m'
 # Print some information about the job to STDOUT
