@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -p bosch_cpu-cascadelake # ml_cpu-ivy # partition (queue)
-#SBATCH -t 0-01:00 # time (D-HH:MM)
-#SBATCH -c 1 # number of CPUs/task
+#SBATCH -t 4-00:00 # time (D-HH:MM)
+#SBATCH -c 20 # number of CPUs/task
 #SBATCH -o log/%x.%A.%a.out # STDOUT  (the folder log has to exist!)  %N replaced by node name, %A will be replaced by the SLURM_ARRAY_JOB_ID value, whilst %a will be replaced by the SLURM_ARRAY_TASK_ID
 #SBATCH -e log/%x.%A.%a.err # STDERR  (the folder log has to exist!)  %A will be replaced by the SLURM_ARRAY_JOB_ID value, whilst %a will be replaced by the SLURM_ARRAY_TASK_ID
 #SBATCH -J bsuite-mdpp-merge-job-array # sets the job name. If not specified, the file name will be used as job name
@@ -9,7 +9,7 @@
 ##SBATCH --mail-type=END,FAIL # (receive mails about end and timeouts/crashes of your job)
 ##SBATCH --gres=gpu:1  # reserves one GPU
 ##SBATCH --mem 16000M # Specify the real memory required per node, not needed as for our cluster, -c below takes priority and auto-sets the memory. For CPU, use --mem-per-cpu
-#SBATCH -a 0-19 # Sets SLURM_ARRAY_TASK_ID - array index values, e.g. 0-31:2; 0-11%4 (it means max 4 tasks at a time)
+#SBATCH -a 0 # Sets SLURM_ARRAY_TASK_ID - array index values, e.g. 0-31:2; 0-11%4 (it means max 4 tasks at a time)
 
 export EXP_NAME='SWEEP' # Ideally contains Area of research + algorithm + dataset # Could just pass this as job name?
 export AGENT='tf/dqn'
@@ -59,7 +59,7 @@ echo "Line common to all tasks with SLURM_JOB_ID: ${SLURM_JOB_ID}, SLURM_ARRAY_J
 mkdir -p bsuite_mdpp_${SLURM_ARRAY_JOB_ID}
 cd bsuite_mdpp_${SLURM_ARRAY_JOB_ID}
 # cd /home/rajanr/mdpp
-\time -v python3 /home/rajanr/git/bsuite-mdpp-merge/bsuite/baselines/${AGENT}/run.py --bsuite_id=${EXP_NAME}/${SLURM_ARRAY_TASK_ID} --logging_mode=csv --verbose=False --save_path=.
+\time -v python3 /home/rajanr/git/bsuite-mdpp-merge/bsuite/baselines/${AGENT}/run.py --bsuite_id=${EXP_NAME} --logging_mode=csv --verbose=False --save_path=.
 
 # Print some Information about the end-time to STDOUT
 echo "DONE";
